@@ -17,20 +17,24 @@ object Mars {
   def main(args:Array[String]) = new Mars().run()
 }
 
-case class Rover(x: Int, y: Int, direction: Direction.Direction) {
+case class Rover(coordinates: Coordinates, direction: Direction.Direction) {
   import Direction._
   def relocate(command: Command): Rover = command match {
     case MoveForward         => direction match {
-      case North => Rover(x, y + 1, direction)
-      case East  => Rover(x + 1, y, direction)
-      case South => Rover(x , y -1, direction)
-      case West  => Rover(x -1, y, direction)
+      case North => Rover(coordinates.moveVertically(1), direction)
+      case East  => Rover(coordinates.moveHorizontally(1), direction)
+      case South => Rover(coordinates.moveVertically(- 1), direction)
+      case West  => Rover(coordinates.moveHorizontally(- 1), direction)
     }
-    case RotateAntiClockwise => Rover(x, y, Direction.anticlockwise(direction))
-    case RotateClockwise     => Rover(x, y, Direction.clockwise(direction))
+    case RotateAntiClockwise => Rover(coordinates, Direction.anticlockwise(direction))
+    case RotateClockwise     => Rover(coordinates, Direction.clockwise(direction))
   }
 }
 
+case class Coordinates(x: Int, y: Int) {
+  def moveHorizontally(delta: Int): Coordinates = Coordinates(x + delta, y)
+  def moveVertically(delta: Int): Coordinates = Coordinates(x, y + delta)
+}
 
 case class Grid(rows: Int, columns: Int) {
   override def toString() =

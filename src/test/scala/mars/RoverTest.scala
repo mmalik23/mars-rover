@@ -4,33 +4,33 @@ import org.scalatest.funsuite.AnyFunSuite
 import Direction._
 
 class RoverTest extends AnyFunSuite {
-  val rover = Rover(0, 0, North)
+  val rover = Rover(Coordinates(0, 0), North)
 
   test("rover should change direction when rotated clockwise") {
-    assert(rover.relocate(RotateClockwise) == Rover(0, 0, East))
+    assert(rover.relocate(RotateClockwise) == rover.copy(direction = East))
   }
 
   test("rover should change direction when rotated anti clockwise") {
-    assert(rover.relocate(RotateAntiClockwise) == Rover(0, 0, West))
+    assert(rover.relocate(RotateAntiClockwise) == rover.copy(direction = West))
   }
 
   test("can move rover forward nortwards") {
-    assert(rover.relocate(MoveForward) == Rover(0, 1, North))
+    assert(rover.relocate(MoveForward) == rover.copy(coordinates = Coordinates(0, 1)))
   }
 
   test("can move rover forward eastwards") {
-    val rover = Rover(0, 0, East)
-    assert(rover.relocate(MoveForward) == Rover(1, 0, East))
+    val rover = Rover(Coordinates(0, 0), East)
+    assert(rover.relocate(MoveForward) ==  rover.copy(coordinates = Coordinates(1, 0)))
   }
 
   test("can move rover forward westwards") {
-    val rover = Rover(0, 0, West)
-    assert(rover.relocate(MoveForward) == Rover(-1, 0, West))
+    val rover = Rover(Coordinates(0, 0), West)
+    assert(rover.relocate(MoveForward) == rover.copy(coordinates = Coordinates(-1, 0)))
   }
 
   test("can move rover forward southwards") {
-    val rover = Rover(0, 0, South)
-    assert(rover.relocate(MoveForward) == Rover(0, -1, South))
+    val rover = Rover(Coordinates(0, 0), South)
+    assert(rover.relocate(MoveForward) == rover.copy(coordinates = Coordinates(0, -1)))
   }
 
 }
