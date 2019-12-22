@@ -32,8 +32,15 @@ case class Rover(coordinates: Coordinates, direction: Direction.Direction) {
 }
 
 case class Coordinates(x: Int, y: Int) {
+
   def moveHorizontally(delta: Int): Coordinates = Coordinates(x + delta, y)
+
   def moveVertically(delta: Int): Coordinates = Coordinates(x, y + delta)
+
+  def translate(grid: Grid): Coordinates = {
+    def t(coordinate: Int, length: Int) = ((coordinate % length) + length) % length
+    Coordinates(t(x, grid.rows), t(y,grid.columns))
+  }
 }
 
 case class Grid(rows: Int, columns: Int) {
