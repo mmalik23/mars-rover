@@ -1,5 +1,6 @@
 package mars
 
+import scala.io.StdIn
 import scala.util.Random
 
 class Mars(
@@ -9,12 +10,14 @@ class Mars(
           ) {
   def run(): Unit = {
     val grid = Grid(rows, columns)
+    val initialRover = Rover(Coordinates(rows/ 2, columns /2), Direction.North)
     writer(grid.toString())
+    writer(initialRover.toString())
   }
 }
 
 object Mars {
-  def main(args:Array[String]) = new Mars().run()
+  def main(args:Array[String]): Unit = new Mars().run()
 }
 
 case class Rover(coordinates: Coordinates, direction: Direction.Direction) {
@@ -29,6 +32,8 @@ case class Rover(coordinates: Coordinates, direction: Direction.Direction) {
     case RotateAntiClockwise => Rover(coordinates, Direction.anticlockwise(direction))
     case RotateClockwise     => Rover(coordinates, Direction.clockwise(direction))
   }
+
+  override def toString: String = s"The rover is currently sitting at $coordinates, facing $direction"
 }
 
 case class Coordinates(x: Int, y: Int) {
@@ -41,9 +46,11 @@ case class Coordinates(x: Int, y: Int) {
     def t(coordinate: Int, length: Int) = ((coordinate % length) + length) % length
     Coordinates(t(x, grid.rows), t(y,grid.columns))
   }
+
+  override def toString = s"($x,$y)"
 }
 
 case class Grid(rows: Int, columns: Int) {
-  override def toString() =
+  override def toString =
     s"Welcome to Mars! Mars has a waistline of $rows blocks and a height of $columns blocks"
 }
